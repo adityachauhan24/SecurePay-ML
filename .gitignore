@@ -1,16 +1,31 @@
+# Python
 venv/
 .venv/
 __pycache__/
 *.pyc
+.pytest_cache/
 
+
+
+# React
 frontend/node_modules/
 frontend/dist/
 
+
+
+# Environment variables
 .env
 .env.*
 
+
+# Large dataset
 data/*.csv
+
+
+# Trained ML models
 models/*.pkl
 models/**/*.pkl
 
+
+# Temporary files
 .vscode/

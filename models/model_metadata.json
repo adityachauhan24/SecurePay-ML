@@ -1,5 +1,5 @@
 {
-    "model_name": "SecurePay ML XGBoost",
+    "model_name": "SecurePay ML XGBoost 1M",
     "threshold": 0.99,
     "feature_names": [
         "step",
@@ -14,7 +14,7 @@
         "type_PAYMENT",
         "type_TRANSFER"
     ],
-    "training_sample_size": 300000,
-    "scale_pos_weight": 774.1937984496124,
-    "best_validation_f1": 0.8666069829901522
+    "training_sample_size": 1000000,
+    "scale_pos_weight": 773.5933384972889,
+    "best_validation_f1": 0.9545983701979045
 }

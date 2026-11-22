@@ -1,0 +1,76 @@
+{
+    "model_name": "SecurePay ML Full XGBoost",
+    "training_sample_size": 3817572,
+    "fraud_training_rows": 4928,
+    "normal_training_rows": 3812644,
+    "scale_pos_weight": 773.6696428571429,
+    "threshold": 0.99,
+    "feature_names": [
+        "step",
+        "amount",
+        "oldbalanceOrg",
+        "oldbalanceDest",
+        "amountToBalanceRatio",
+        "isAmountGreaterThanBalance",
+        "type_CASH_IN",
+        "type_CASH_OUT",
+        "type_DEBIT",
+        "type_PAYMENT",
+        "type_TRANSFER"
+    ],
+    "validation_precision": 0.6794485135717363,
+    "validation_recall": 0.9604141291108405,
+    "validation_f1": 0.795861720918496,
+    "validation_average_precision": 0.95628519670313,
+    "threshold_results": [
+        {
+            "threshold": 0.3,
+            "precision": 0.5319493999351281,
+            "recall": 0.9987819732034104,
+            "f1": 0.6941798941798942
+        },
+        {
+            "threshold": 0.5,
+            "precision": 0.5421487603305785,
+            "recall": 0.9987819732034104,
+            "f1": 0.70280694236126
+        },
+        {
+            "threshold": 0.6,
+            "precision": 0.5461205461205462,
+            "recall": 0.9987819732034104,
+            "f1": 0.7061356297093649
+        },
+        {
+            "threshold": 0.7,
+            "precision": 0.5510752688172043,
+            "recall": 0.9987819732034104,
+            "f1": 0.7102641836292768
+        },
+        {
+            "threshold": 0.8,
+            "precision": 0.5599590023915272,
+            "recall": 0.9981729598051157,
+            "f1": 0.7174436419347778
+        },
+        {
+            "threshold": 0.9,
+            "precision": 0.5740350877192982,
+            "recall": 0.9963459196102314,
+            "f1": 0.7284060552092609
+        },
+        {
+            "threshold": 0.95,
+            "precision": 0.5782024062278839,
+            "recall": 0.9951278928136419,
+            "f1": 0.7314234556848702
+        },
+        {
+            "threshold": 0.99,
+            "precision": 0.6794485135717363,
+            "recall": 0.9604141291108405,
+            "f1": 0.795861720918496
+        }
+    ],
+    "test_set_evaluated": false
+}

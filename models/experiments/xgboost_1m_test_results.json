@@ -1,0 +1,17 @@
+{
+    "model": "XGBoost 1M",
+    "threshold": 0.99,
+    "accuracy": 0.9998766231520977,
+    "precision": 0.9146205357142857,
+    "recall": 0.9975654290931223,
+    "f1_score": 0.9542940320232897,
+    "f2_score": 0.979794356767097,
+    "average_precision": 0.9910443633245823,
+    "confusion_matrix": {
+        "tn": 1270728,
+        "fp": 153,
+        "fn": 4,
+        "tp": 1639
+    },
+    "evaluation_note": "Random-split test set previously inspected during project development."
+}
