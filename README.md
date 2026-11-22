@@ -1,7 +1,12 @@
 
 # SecurePay ML
-
 ### Machine Learning-Based Fraud Detection System
+
+🌐 **Live Demo:** https://secure-pay-ml-three.vercel.app/
+
+🔗 **Backend API:** https://securepay-ml-api.onrender.com
+
+📖 **API Documentation:** https://securepay-ml-api.onrender.com/docs
 
 SecurePay ML is an end-to-end machine learning project designed to identify potentially fraudulent transactions using the PaySim synthetic mobile-money dataset.
 
