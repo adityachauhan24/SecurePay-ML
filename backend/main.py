@@ -7,6 +7,7 @@ import io
 
 from fastapi import UploadFile, File, HTTPException
 from fastapi.responses import StreamingResponse
+from fastapi.middleware.cors import CORSMiddleware
 
 from fastapi import FastAPI
 from pydantic import BaseModel, Field
@@ -24,6 +25,18 @@ app = FastAPI(
     description="Machine Learning Based Fraud Detection",
     version="1.0.0"
 )
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost:5173",
+        "https://secure-pay-ml-three.vercel.app"
+    ],
+    allow_credentials=False,
+    allow_methods=["GET", "POST", "OPTIONS"],
+    allow_headers=["*"],
+)
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
