@@ -26,10 +26,22 @@ app = FastAPI(
     version="1.0.0"
 )
 
+# =====================================
+# CREATE FASTAPI APPLICATION
+# =====================================
+
+app = FastAPI(
+    title="SecurePay ML API",
+    description="Machine Learning Based Fraud Detection",
+    version="1.0.0"
+)
+
+# Allow React frontend to communicate with FastAPI
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://localhost:5173",
+        "http://127.0.0.1:5173",
         "https://secure-pay-ml-three.vercel.app"
     ],
     allow_credentials=False,
@@ -37,16 +49,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=[
-        "http://localhost:5173",
-        "http://127.0.0.1:5173"
-    ],
-    allow_credentials=False,
-    allow_methods=["GET", "POST"],
-    allow_headers=["Content-Type"],
-)
 
 # =====================================
 # LOAD SAVED MODEL
