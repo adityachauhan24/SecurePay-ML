@@ -20,16 +20,16 @@ The project combines machine learning with a FastAPI backend and a React fronten
 ## Application Screenshots
 
 ### Dashboard
-![SecurePay Dashboard](screenshots/dashboard.png)
+![SecurePay Dashboard](screenshots/dashboard.jpg)
 
 ### Model Performance
-![Model Performance](screenshots/model-performance.png)
+![Model Performance](screenshots/model-performance.jpg)
 
 ### Single Transaction Prediction
-![Single Prediction](screenshots/single-prediction.png)
+![Single Prediction](screenshots/single-prediction.jpg)
 
 ### Batch CSV Analysis
-![Batch Analysis](screenshots/batch-analysis.png)
+![Batch Analysis](screenshots/batch-analysis.jpg)
 
 ## Tech Stack
 
