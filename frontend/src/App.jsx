@@ -674,19 +674,25 @@ useEffect(() => {
             </p>
           </div>
 
-          <div className="header-status">
-            <span
-              className={
-                modelInfo
-                  ? "online-dot"
-                  : "offline-dot"
-              }
-            />
+          
+<div className="header-status">
+  <span
+    className={
+      modelLoading
+        ? "loading-dot"
+        : modelInfo
+          ? "online-dot"
+          : "offline-dot"
+    }
+  />
 
-            {modelInfo
-              ? "Model Info Available"
-              : "Model Info Unavailable"}
-          </div>
+  {modelLoading
+    ? "Starting ML Backend..."
+    : modelInfo
+      ? "Model Info Available"
+      : "Model Info Unavailable"}
+</div>
+
 
         </header>
 
