@@ -1,0 +1,20 @@
+{
+    "model_name": "SecurePay ML XGBoost",
+    "threshold": 0.99,
+    "feature_names": [
+        "step",
+        "amount",
+        "oldbalanceOrg",
+        "oldbalanceDest",
+        "amountToBalanceRatio",
+        "isAmountGreaterThanBalance",
+        "type_CASH_IN",
+        "type_CASH_OUT",
+        "type_DEBIT",
+        "type_PAYMENT",
+        "type_TRANSFER"
+    ],
+    "training_sample_size": 300000,
+    "scale_pos_weight": 774.1937984496124,
+    "best_validation_f1": 0.8666069829901522
+}
