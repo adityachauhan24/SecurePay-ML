@@ -221,45 +221,60 @@ function App() {
   // FETCH MODEL PERFORMANCE FROM BACKEND
   // =====================================
 
-  useEffect(() => {
-    let cancelled = false;
 
-    async function fetchModelInfo() {
-      try {
-        const response = await fetch(
-          `${API_URL}/model-info`
+useEffect(() => {
+  let cancelled = false;
+  let retryTimer;
+
+  const MAX_RETRIES = 15;
+  const RETRY_DELAY = 10000; // 10 seconds
+
+  async function fetchModelInfo(attempt = 1) {
+    try {
+      const response = await fetch(`${API_URL}/model-info`);
+
+      if (!response.ok) {
+        throw new Error("Model information unavailable.");
+      }
+
+      const data = await response.json();
+
+      if (!cancelled) {
+        setModelInfo(data);
+        setModelError("");
+        setModelLoading(false);
+      }
+
+    } catch (err) {
+      if (cancelled) return;
+
+      if (attempt < MAX_RETRIES) {
+        setModelLoading(true);
+        setModelError("");
+
+        retryTimer = setTimeout(() => {
+          if (!cancelled) {
+            fetchModelInfo(attempt + 1);
+          }
+        }, RETRY_DELAY);
+
+      } else {
+        setModelLoading(false);
+        setModelError(
+          "Unable to connect to the backend. Please refresh."
         );
-
-        if (!response.ok) {
-          throw new Error("Model information unavailable.");
-        }
-
-        const data = await response.json();
-
-        if (!cancelled) {
-          setModelInfo(data);
-          setModelError("");
-        }
-
-      } catch (err) {
-        if (!cancelled) {
-          setModelError(
-            "Unable to load model metrics. Check your backend."
-          );
-        }
-      } finally {
-        if (!cancelled) {
-          setModelLoading(false);
-        }
       }
     }
+  }
 
-    fetchModelInfo();
+  fetchModelInfo();
 
-    return () => {
-      cancelled = true;
-    };
-  }, []);
+  return () => {
+    cancelled = true;
+    clearTimeout(retryTimer);
+  };
+}, []);
+
 
   // =====================================
   // COMBINED TRANSACTION HISTORY
@@ -912,10 +927,8 @@ function App() {
               </div>
 
               {modelLoading && (
-                <p className="empty-text">
-                  Loading model information...
-                </p>
-              )}
+  <p>Starting ML Backend... This may take a minute.</p>
+)}
 
               {modelError && (
                 <div className="error-message">
