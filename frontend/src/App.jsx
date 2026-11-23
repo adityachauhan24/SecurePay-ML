@@ -211,7 +211,30 @@ function App() {
   const [batchError, setBatchError] = useState("");
   const [batchSuccess, setBatchSuccess] = useState("");
 
-  const [history, setHistory] = useState([]);
+  
+const [history, setHistory] = useState(() => {
+  try {
+    const saved = localStorage.getItem("securepay_history");
+    const data = saved ? JSON.parse(saved) : [];
+    return Array.isArray(data) ? data : [];
+  } catch {
+    return [];
+  }
+});
+
+useEffect(() => {
+  try {
+    localStorage.setItem(
+      "securepay_history",
+      JSON.stringify(history)
+    );
+  } catch (error) {
+    console.error("Failed to save history:", error);
+  }
+}, [history]);
+
+
+
 
   const [modelInfo, setModelInfo] = useState(null);
   const [modelError, setModelError] = useState("");
