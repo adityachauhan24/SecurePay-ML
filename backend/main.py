@@ -11,20 +11,12 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from fastapi import FastAPI
 from pydantic import BaseModel, Field
-from fastapi.middleware.cors import CORSMiddleware
 
 from src.preprocess import preprocess_transaction
 
 
-# =====================================
-# CREATE FASTAPI APPLICATION
-# =====================================
 
-app = FastAPI(
-    title="SecurePay ML API",
-    description="Machine Learning Based Fraud Detection",
-    version="1.0.0"
-)
+
 
 # =====================================
 # CREATE FASTAPI APPLICATION
@@ -70,7 +62,7 @@ feature_names = metadata["feature_names"]
 class Transaction(BaseModel):
     step: int = Field(ge=1)
     type: str
-    amount: float = Field(ge=0)
+    amount: float = Field(gt=0)
     oldbalanceOrg: float = Field(ge=0)
     oldbalanceDest: float = Field(ge=0)
 
@@ -97,22 +89,70 @@ def health_check():
 # SINGLE TRANSACTION PREDICTION
 # =====================================
 
+
+# =====================================
+# SINGLE TRANSACTION PREDICTION
+# =====================================
+
 @app.post("/predict")
 def predict_fraud(transaction: Transaction):
 
-    # Convert request into DataFrame
+    # 1. Validate transaction type
+    valid_types = {
+        "TRANSFER",
+        "CASH_OUT",
+        "CASH_IN",
+        "PAYMENT",
+        "DEBIT"
+    }
+
+    if transaction.type not in valid_types:
+        raise HTTPException(
+            status_code=422,
+            detail="Invalid transaction type."
+        )
+
+    # 2. Validate transaction amount
+    if transaction.amount <= 0:
+        raise HTTPException(
+            status_code=422,
+            detail="Transaction amount must be greater than zero."
+        )
+
+    # 3. Check sender balance for outgoing transactions
+    outgoing_types = {
+        "TRANSFER",
+        "CASH_OUT",
+        "PAYMENT",
+        "DEBIT"
+    }
+
+    if (
+        transaction.type in outgoing_types
+        and transaction.amount > transaction.oldbalanceOrg
+    ):
+        raise HTTPException(
+            status_code=422,
+            detail=(
+                f"Insufficient Balance! "
+                f"Available: {transaction.oldbalanceOrg}, "
+                f"Requested: {transaction.amount}"
+            )
+        )
+
+    # 4. Convert request into DataFrame
     df = pd.DataFrame([transaction.model_dump()])
 
-    # Apply saved preprocessing
+    # 5. Apply saved preprocessing
     X = preprocess_transaction(df)
 
-    # Maintain original feature order
+    # 6. Maintain original feature order
     X = X[feature_names]
 
-    # Predict fraud score
+    # 7. Predict fraud score
     fraud_score = float(model.predict_proba(X)[0, 1])
 
-    # Apply selected threshold
+    # 8. Apply selected threshold
     prediction = int(fraud_score >= threshold)
 
     return {
@@ -121,7 +161,6 @@ def predict_fraud(transaction: Transaction):
         "status": "FRAUD" if prediction == 1 else "NORMAL",
         "threshold": threshold
     }
-
 
 
 # =====================================

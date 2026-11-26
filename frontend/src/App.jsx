@@ -386,22 +386,82 @@ useEffect(() => {
   // SINGLE TRANSACTION PREDICTION
   // =====================================
 
-  async function handlePredict(event) {
-    event.preventDefault();
 
-    setLoading(true);
-    setError("");
-    setResult(null);
+async function handlePredict(event) {
+  event.preventDefault();
 
-    const transaction = {
-      step: Number(form.step),
-      type: form.type,
-      amount: Number(form.amount),
-      oldbalanceOrg: Number(form.oldbalanceOrg),
-      oldbalanceDest: Number(form.oldbalanceDest),
-    };
+  setError("");
+  setResult(null);
 
-    try {
+  const transaction = {
+    step: Number(form.step),
+    type: form.type,
+    amount: Number(form.amount),
+    oldbalanceOrg: Number(form.oldbalanceOrg),
+    oldbalanceDest: Number(form.oldbalanceDest),
+  };
+
+  // 1. Check empty fields
+  if (
+    ["step", "amount", "oldbalanceOrg", "oldbalanceDest"]
+      .some((key) => form[key] === "")
+  ) {
+    setError("Please fill all transaction fields.");
+    return;
+  }
+
+  // 2. Validate transaction step
+  if (
+    !Number.isInteger(transaction.step) ||
+    transaction.step < 1
+  ) {
+    setError("Transaction step must be a positive integer.");
+    return;
+  }
+
+  // 3. Validate transaction amount
+  if (
+    !Number.isFinite(transaction.amount) ||
+    transaction.amount <= 0
+  ) {
+    setError("Transaction amount must be greater than zero.");
+    return;
+  }
+
+  // 4. Validate balances
+  if (
+    !Number.isFinite(transaction.oldbalanceOrg) ||
+    !Number.isFinite(transaction.oldbalanceDest) ||
+    transaction.oldbalanceOrg < 0 ||
+    transaction.oldbalanceDest < 0
+  ) {
+    setError("Account balances cannot be negative or invalid.");
+    return;
+  }
+
+  // 5. Check sufficient balance for outgoing transactions
+  const outgoingTypes = [
+    "TRANSFER",
+    "CASH_OUT",
+    "PAYMENT",
+    "DEBIT"
+  ];
+
+  if (
+    outgoingTypes.includes(transaction.type) &&
+    transaction.amount > transaction.oldbalanceOrg
+  ) {
+    setError(
+      `Insufficient Balance! Available: ${transaction.oldbalanceOrg}, Requested: ${transaction.amount}`
+    );
+    return;
+  }
+
+  // 6. Start ML prediction only for valid input
+  setLoading(true);
+
+  try {
+
       const response = await fetch(
         `${API_URL}/predict`,
         {
